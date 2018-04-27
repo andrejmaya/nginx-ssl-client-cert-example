@@ -1,0 +1,13 @@
+version: '2.0'
+
+services:
+  nginx:
+    image: nginx:1.13.12
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - './default.conf:/etc/nginx/conf.d/default.conf'      
+      - './ssl/server.crt:/etc/ssl/nginx/server.crt'
+      - './ssl/server.key:/etc/ssl/nginx/server.key'
+      - './ssl/rootCA.pem:/etc/ssl/nginx/rootCA.pem'
