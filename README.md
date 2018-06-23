@@ -1,4 +1,4 @@
-# SSL client certificate example with Nginnx 
+# SSL client certificate example with Nginx 
 
 Follow these steps to get this example up and running
 
@@ -19,17 +19,15 @@ export LOCALITY=Hamburg
 #create private key and root cert of CA 
 openssl req -new -x509 -nodes -newkey rsa:4096 -keyout rootCA.key -sha256 -days 365 -out rootCA.pem -subj "/C=DE/ST=$STATE/L=$LOCALITY/O=$ORGANIZATION/OU=$ORGANIZATION_UNIT/CN=$DOMAIN" 
 
-#server certificates and sign request
-openssl genrsa -out server.key 4096
-openssl req -new -key server.key -out server.csr -subj "/C=DE/ST=$STATE/L=$LOCALITY/O=$ORGANIZATION/OU=$ORGANIZATION_UNIT/CN=$DOMAIN"
+#server key, certificate and sign request
+openssl req -new -newkey rsa:4096 -nodes -keyout server.key -out server.csr -subj "/C=DE/ST=$STATE/L=$LOCALITY/O=$ORGANIZATION/OU=$ORGANIZATION_UNIT/CN=$DOMAIN"
 
 # sign the request
 openssl x509 -req -in server.csr -CA rootCA.pem -CAkey rootCA.key -CAcreateserial -out server.crt -days 365 -sha256
 
 
 # client side
-openssl genrsa -out client.key 4096
-openssl req -new -key client.key -out client.csr -subj "/C=DE/ST=$STATE/L=$LOCALITY/O=$ORGANIZATION/OU=$ORGANIZATION_UNIT/CN=$DOMAIN"
+openssl req -new -newkey rsa:4096 -nodes -keyout client.key -out client.csr -subj "/C=DE/ST=$STATE/L=$LOCALITY/O=$ORGANIZATION/OU=$ORGANIZATION_UNIT/CN=$DOMAIN"
 
 #generate client certificate
 openssl x509 -req -in client.csr -CA rootCA.pem -CAkey rootCA.key -CAcreateserial -out client.crt -days 365 -sha256
